@@ -1,0 +1,22 @@
+@DEV = http://localhost:8000/
+
+@domain = {{DEV}}
+@jsonContentType = application/json
+
+### public route
+GET {{domain}}health-check
+Content-Type: {{jsonContentType}}
+
+### private route
+GET {{domain}}home
+Content-Type: {{jsonContentType}}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7fSwiaWF0IjoxNjM4MDEwNzIzfQ.8TzG7EMCbEXXZdGKnWIixOgjekrkfpGNksl5-fCuFps
+
+### Login username:password
+POST {{domain}}auth
+Content-Type: {{jsonContentType}}
+
+{
+  "phone": "0987654323",
+  "password": "a12345678"
+}
