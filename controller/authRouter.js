@@ -7,6 +7,7 @@ const yup = require("yup");
 const { responseOk, responseErrWithMsg } = require("../helpers/response");
 const { parseUserResponse } = require("../services/userServices");
 const { jwtAuthorizationMiddleware } = require("../helpers/passportManager");
+const { passwordSchema } = require("../helpers/validateSchemaHelper");
 
 const router = express.Router();
 
@@ -33,7 +34,7 @@ try{
 
 const loginRequestSchema = yup.object({
   email: yup.string().required('信箱或密碼不可為空'),
-  password: yup.string().required('電話或密碼不可為空'),
+  password: passwordSchema,
 });
 
 router.post("/", (req, res) => {

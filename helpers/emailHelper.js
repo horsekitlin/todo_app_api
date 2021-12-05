@@ -4,7 +4,7 @@ const {
   EMAIL_ACCOUNT,
   ENMAIL_PASSWORD,
 } = process.env;
-
+  
 const mailTransport = nodemailer.createTransport({
   service: 'Gmail',
   auth: {

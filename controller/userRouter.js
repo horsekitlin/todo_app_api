@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const yup = require("yup");
 const { responseErrWithMsg } = require('../helpers/response');
+const { passwordSchema } = require('../helpers/validateSchemaHelper');
 const { createUser, getUserByUserId, updateUserByUserId, validateUser } = require('../services/userServices');
 
 router.get('/:userId', async (req, res) => {
@@ -28,9 +29,9 @@ router.put('/:userId', async (req, res) => {
 
 
 const registeRequestSchema = yup.object({
+  password: passwordSchema,
   name: yup.string().required('名稱不可為空'),
   email: yup.string().email('email 格式錯誤').required('信箱不可為空'),
-  password: yup.string().required('密碼不可為空'),
   googleId: yup.string().nullable().default(null),
   facebookId: yup.string().nullable().default(null),
 });
