@@ -12,6 +12,16 @@ module.exports = {
         type: Sequelize.STRING,
         length: 20,
       },
+      facebook_id: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+      google_id: {
+        type: Sequelize.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
       password: {
         type: Sequelize.STRING,
         length: 200,

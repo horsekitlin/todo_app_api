@@ -1,5 +1,6 @@
 const database = require("../database/models");
 const pick = require("lodash/pick");
+const { isEmpty } = require("lodash-es");
 
 const getUserByUserId = async (userId) => {
   return await database.User.findOne({
@@ -10,7 +11,7 @@ const getUserByUserId = async (userId) => {
   });
 };
 
-module.exports.updateUserByUserId = async (userId, query) => {
+const updateUserByUserId = async (userId, query) => {
   const user = await getUserByUserId(userId);
 
   if(query.name) {
@@ -25,7 +26,7 @@ module.exports.updateUserByUserId = async (userId, query) => {
   return user;
 };
 
-module.exports.getUserWithPasswordBy = async (phone) => {
+const getUserWithPasswordBy = async (phone) => {
   const userResult = await database.User.findOne({
     where: {
       phone,
@@ -45,7 +46,7 @@ const parseUserResponse = (userResult) => {
   return userResponse;
 };
 
-module.exports.createUser = async (userData) => {
+const createUser = async (userData) => {
   const existUser = await database.User.findOne({ where: {phone: userData.phone} });
   if (existUser) throw new Error("使用者已存在");
 
@@ -56,7 +57,6 @@ module.exports.createUser = async (userData) => {
       email: userData.email,
       password: userData.password,
     });
-  
 
   return {
     id: userResult.id,
@@ -65,5 +65,21 @@ module.exports.createUser = async (userData) => {
   };
 };
 
+const validateUser = async (userId) => {
+  const userResult = await database.User.findOne({
+    id: userId,
+  });
+
+  if (isEmpty(userResult)) {
+    throw new Error('使用者不存在');
+  }
+
+  
+};
+
 module.exports.parseUserResponse = parseUserResponse;
 module.exports.getUserByUserId = getUserByUserId;
+module.exports.getUserWithPasswordBy = getUserWithPasswordBy;
+module.exports.createUser = createUser;
+module.exports.updateUserByUserId = updateUserByUserId;
+module.exports.validateUser = validateUser;

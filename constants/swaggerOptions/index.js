@@ -2,7 +2,7 @@ const dotenv = require('dotenv');
 
 dotenv.config();
 
-const {PORT, NODE_ENV} = process.env;
+const {SOCKETCLUSTER_PORT, NODE_ENV} = process.env;
 
 const paths = require('./paths');
 const definitions = require('./definitions');
@@ -10,7 +10,7 @@ const definitions = require('./definitions');
 const getHostURL = () => {
   switch(NODE_ENV) {
     default:
-      return `localhost:${PORT}`;
+      return `localhost:${SOCKETCLUSTER_PORT}`;
   }
 };
 
@@ -34,6 +34,13 @@ const options = {
     },
   ],
   schemes: ["http", "https"],
+  securityDefinitions: {
+		ApiKeyAuth: {
+			type: "apiKey",
+			in: "header",
+			name: "Authorization"
+		}
+	},
   consumes: ["application/json"],
   produces: ["application/json"],
   paths: {

@@ -25,7 +25,6 @@ describe('Test authorization user routes', () => {
       .set('Content-Type', 'application/json')
       .send(mockAdminUserLoginBody)
       .then(response => {
-      console.log("🚀 ~ file: authRouter.test.js ~ line 28 ~ describe ~ response", response)
         expect(response.statusCode).toBe(200);
         // expect(response.body.success).toBe(true);
         // expect(response.body.data.token).not.toBe(undefined);

@@ -14,6 +14,18 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         length: 20,
       },
+      facebookId: {
+        field: "facebook_id",
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
+      googleId: {
+        field: "google_id",
+        type: DataTypes.STRING,
+        allowNull: true,
+        defaultValue: null,
+      },
       email: {
         field: "email",
         type: DataTypes.STRING,
@@ -27,6 +39,12 @@ module.exports = (sequelize, DataTypes) => {
         set(value) {
           this.setDataValue("password", saltHashPassword(value));
         },
+      },
+      status: {
+        field: "status",
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+        comment: '帳號狀態: 0: 等待驗證中, 1: 已驗證',
       },
     }, {
     sequelize,

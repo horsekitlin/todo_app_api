@@ -17,14 +17,10 @@ module.exports = {
             type: "string",
           },
         },
+      ],
+      security: [
         {
-          in: "header",
-          name: "Authorization",
-          description: "Bearer ${{token}}",
-          required: true,
-          schema: {
-            type: "string",
-          },
+          ApiKeyAuth: [],
         },
       ],
       responses: {
