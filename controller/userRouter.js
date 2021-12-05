@@ -28,9 +28,11 @@ router.put('/:userId', async (req, res) => {
 
 
 const registeRequestSchema = yup.object({
-  phone: yup.string().required('電話不可為空'),
+  name: yup.string().required('名稱不可為空'),
   email: yup.string().email('email 格式錯誤').required('信箱不可為空'),
   password: yup.string().required('密碼不可為空'),
+  googleId: yup.string().default(null),
+  facebookId: yup.string().default(null),
 });
 
 router.post('/', async (req, res) => {
@@ -56,10 +58,5 @@ router.post('/:userId', async (req, res) => {
     return responseErrWithMsg(res, error.message);
   }
 });
-// {
-//   from: 'demo server <demoserver@gmail.com>',
-//   to: 'Tomas <horsekit1982@gmail.com>',
-//   subject: 'Validate Your Account',
-//   html: '<a target='_blank' href="https://google.com.tw">Validate Link</a>',
-// }
+
 module.exports = router;

@@ -9,11 +9,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         length: 20,
       },
-      phone: {
-        field: "phone",
-        type: DataTypes.STRING,
-        length: 20,
-      },
       facebookId: {
         field: "facebook_id",
         type: DataTypes.STRING,

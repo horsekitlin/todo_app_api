@@ -1,6 +1,7 @@
 const database = require("../database/models");
 const pick = require("lodash/pick");
-const { isEmpty } = require("lodash-es");
+const isEmpty = require("lodash/isEmpty");
+const isNull = require("lodash/isNull");
 
 const getUserByUserId = async (userId) => {
   return await database.User.findOne({
@@ -39,7 +40,7 @@ const getUserWithPasswordBy = async (phone) => {
 const parseUserResponse = (userResult) => {
   const userResponse = pick(userResult, [
     "id",
-    "phone",
+    "name",
     "email",
     "createAt",
   ]);
@@ -50,12 +51,18 @@ const createUser = async (userData) => {
   const existUser = await database.User.findOne({ where: {phone: userData.phone} });
   if (existUser) throw new Error("使用者已存在");
 
+  const status = isNull(facebookId) && isNull(googleId)
+    ? 0
+    : 1;
+
   const userResult = await database.User.create(
     {
+      status,
       name: userData.name,
-      phone: userData.phone,
       email: userData.email,
       password: userData.password,
+      googleId: userData.googleId,
+      facebookId: userData.facebookId,
     });
 
   return {
