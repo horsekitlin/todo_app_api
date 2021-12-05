@@ -67,7 +67,20 @@ module.exports = {
           description: "OK",
           schema: {
             type: "object",
-            $ref: "#/definitions/User",
+            properties: {
+              success: {
+                type: "boolean",
+                default: true,
+              },
+              expireIn: {
+                type: 'number',
+                description: '過期的時間, null 為永遠不會過期',
+              },
+              user: {
+                type: 'object',
+                $ref: "#/definitions/User",
+              },
+            },
           },
         },
       },

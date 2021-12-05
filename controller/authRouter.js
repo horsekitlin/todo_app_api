@@ -19,7 +19,7 @@ const { AUTH_SECRET } = process.env;
 
 const generatorToken = (user) => {
   const signInfo = pick(user, ["id", "email", "status"]);
-  const token = jwt.sign(
+  return jwt.sign(
     {
       data: signInfo,
       // exp: expireIn,
@@ -61,14 +61,7 @@ router.post("/", (req, res) => {
       if (error) throw error;
       // const expireIn = add(new Date(), { days: 1 }).getTime();
 
-      const signInfo = pick(user, ["id", "email", "status"]);
-      const token = jwt.sign(
-        {
-          data: signInfo,
-          // exp: expireIn,
-        },
-        AUTH_SECRET
-      );
+      const token = generatorToken(user);
 
       return responseOk(res, {
         token,

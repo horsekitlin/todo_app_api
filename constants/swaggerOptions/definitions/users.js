@@ -38,11 +38,24 @@ module.exports = {
   User: {
     required: [],
     properties: {
+      id: {
+        type: 'number',
+        description: '使用者的 Id',
+        default: 1,
+      },
      ...BasicUser,
+     status: {
+      type: 'number',
+      description: '使用者的 狀態: 0: 未驗證, 1: 已驗證',
+      default: 1,
+    },
+     password: undefined,
+     facebookId: undefined,
+     googleId: undefined,
      createdAt: {
        type: 'string',
        description: '使用者的建立時間戳',
-       default: '2021-09-01 11:00:00',
+       default: '2021-12-05T07:38:21.759Z',
      },
     },
   },
