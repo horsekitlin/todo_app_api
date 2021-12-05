@@ -31,8 +31,8 @@ const registeRequestSchema = yup.object({
   name: yup.string().required('名稱不可為空'),
   email: yup.string().email('email 格式錯誤').required('信箱不可為空'),
   password: yup.string().required('密碼不可為空'),
-  googleId: yup.string().default(null),
-  facebookId: yup.string().default(null),
+  googleId: yup.string().nullable().default(null),
+  facebookId: yup.string().nullable().default(null),
 });
 
 router.post('/', async (req, res) => {

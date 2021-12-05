@@ -50,7 +50,16 @@
   "scripts": {
     "start": "node server.js",
     "start:watch": "./node_modules/nodemon/bin/nodemon.js server.js",
-    "start:docker": "./node_modules/nodemon/bin/nodemon.js /usr/src/app/server.js"
+    "start:docker": "./node_modules/nodemon/bin/nodemon.js /usr/src/app/server.js",
+    "reset:local:db": "yarn db:migrate:drop && yarn db:migrate && yarn seed:db",
+    "reset:uat:db": "yarn migrate:db:uat:drop && yarn migrate:db:uat && yarn seed:uat:db",
+    "db:migrate": "cd ./database && npx sequelize-cli db:migrate && cd ..",
+    "db:migrate:drop": "cd ./database && npx sequelize-cli db:migrate:undo:all && cd ..",
+    "migrate:db:uat": "cd ./database && NODE_ENV=uat npx sequelize-cli db:migrate && cd ..",
+    "migrate:db:uat:drop": "cd database && NODE_ENV=uat npx sequelize-cli db:migrate:undo:all && cd ..",
+    "seed:db": "cd database && npx sequelize-cli db:seed:all && cd ..",
+    "seed:uat:db": "cd database && NODE_ENV=uat npx sequelize-cli db:seed:all && cd ..",
+    "start:watch:uat": "NODE_ENV=uat ./node_modules/nodemon/bin/nodemon.js server.js"
   },
   "devDependencies": {
     "supertest": "^6.1.6"

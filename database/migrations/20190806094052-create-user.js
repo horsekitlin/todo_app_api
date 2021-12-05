@@ -8,9 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      phone: {
-        type: Sequelize.STRING,
-        length: 20,
+      status: {
+        type: Sequelize.INTEGER,
+        defaultValue: 0,
+        comment: '使用者的狀態: 0: 未驗證, 1: 已驗證',
       },
       facebook_id: {
         type: Sequelize.STRING,
@@ -34,15 +35,15 @@ module.exports = {
         type: Sequelize.STRING,
         length: 100,
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      deletedAt: {
+      deleted_at: {
         allowNull: true,
         type: Sequelize.DATE
       },

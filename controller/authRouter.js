@@ -32,7 +32,7 @@ try{
 });
 
 const loginRequestSchema = yup.object({
-  phone: yup.string().required('電話或密碼不可為空'),
+  email: yup.string().required('信箱或密碼不可為空'),
   password: yup.string().required('電話或密碼不可為空'),
 });
 

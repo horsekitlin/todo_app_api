@@ -2,6 +2,7 @@ const database = require("../database/models");
 const pick = require("lodash/pick");
 const isEmpty = require("lodash/isEmpty");
 const isNull = require("lodash/isNull");
+const { sendValidationEmail } = require("../helpers/emailHelper");
 
 const getUserByUserId = async (userId) => {
   return await database.User.findOne({
@@ -48,28 +49,34 @@ const parseUserResponse = (userResult) => {
 };
 
 const createUser = async (userData) => {
-  const existUser = await database.User.findOne({ where: {phone: userData.phone} });
+  const {email, googleId, facebookId, name, password } = userData;
+  const existUser = await database.User.findOne({ where: { email } });
   if (existUser) throw new Error("使用者已存在");
 
+  const isEmailRegister = isNull(facebookId) && isNull(googleId);
+  
   const status = isNull(facebookId) && isNull(googleId)
     ? 0
     : 1;
 
-  const userResult = await database.User.create(
+  userResult = await database.User.create(
     {
       status,
-      name: userData.name,
-      email: userData.email,
-      password: userData.password,
-      googleId: userData.googleId,
-      facebookId: userData.facebookId,
+      name,
+      email,
+      password,
+      googleId,
+      facebookId,
     });
 
-  return {
-    id: userResult.id,
-    createdAt: userResult.createdAt,
-    ...userData,
-  };
+    if (isEmailRegister) {
+      await sendValidationEmail({
+        from: 'demo server <demoserver@gmail.com>',
+        to: `${name} <${email}>`,
+        subject: 'Validate Your Account',
+        html: `<a target='_blank' href="${process.env.DOMAIN}/${userResult.id}">Validate Link</a>`,
+      });
+    }
 };
 
 const validateUser = async (userId) => {

@@ -1,9 +1,11 @@
+const baseMigration = require("../config/baseMigration");
 const { saltHashPassword } = require("../../helpers/utils");
 
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define(
     "User",
     {
+      ...baseMigration,
       name: {
         field: "name",
         type: DataTypes.STRING,

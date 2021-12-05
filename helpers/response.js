@@ -21,7 +21,6 @@ module.exports.responseAddOk = responseAddOk;
 module.exports.responseBadRequest = responseBadRequest;
 
 module.exports.responseNotAuth = responseNotAuth;
-
 module.exports.responseInternalErr = responseInternalErr;
 
 
@@ -29,7 +28,7 @@ module.exports.responseInternalErr = responseInternalErr;
 
 module.exports.responseErr = body => responseBadRequest(body);
 
-module.exports.responseErrWithMsg = (res, message, status=0) => responseBadRequest(res, {data: {status, message}});
+module.exports.responseErrWithMsg = (res, message, status=0) => responseBadRequest(res, {success: false, data: {status, message}});
 
 module.exports.responseAddOperationFail = result => {
   const message = 'Add Operation Fail';
