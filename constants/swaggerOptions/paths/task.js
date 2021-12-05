@@ -1,4 +1,66 @@
 module.exports = {
+  '/tasks/{taskId}': {
+    put: {
+      tags: ["任務"],
+      summary: "編輯任務",
+      description: "編輯任務",
+      operationId: "updateTask",
+      consumes: ["application/json"],
+      produces: ["application/json"],
+      parameters: [
+        {
+          in: "path",
+          name: "taskId",
+          description: "Task Id",
+          required: true,
+          schema: {
+            type: "number",
+            description: '任務 Id',
+            default: 1,
+          },
+        },
+        {
+          in: "body",
+          name: "data",
+          description: "Task Information",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              status: {
+                type: 'number',
+                description: '任務狀態',
+                default: 0,
+              },
+            },
+          },
+        },
+      ],
+      security: [
+        {
+          ApiKeyAuth: [],
+        },
+      ],
+      responses: {
+        200: {
+          description: "OK",
+          schema: {
+            type: "object",
+            properties: {
+              success: {
+                type: "boolean",
+                default: true,
+              },
+              data: {
+                type: 'object',
+                $ref: "#/definitions/Task",
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   '/tasks': {
     get: {
       tags: ["任務"],
@@ -51,55 +113,6 @@ module.exports = {
           schema: {
             type: "object",
             $ref: "#/definitions/CreateTask",
-          },
-        },
-      ],
-      security: [
-        {
-          ApiKeyAuth: [],
-        },
-      ],
-      responses: {
-        200: {
-          description: "OK",
-          schema: {
-            type: "object",
-            properties: {
-              success: {
-                type: "boolean",
-                default: true,
-              },
-              data: {
-                type: 'object',
-                $ref: "#/definitions/Task",
-              },
-            },
-          },
-        },
-      },
-    },
-    put: {
-      tags: ["任務"],
-      summary: "編輯任務",
-      description: "編輯任務",
-      operationId: "updateTask",
-      consumes: ["application/json"],
-      produces: ["application/json"],
-      parameters: [
-        {
-          in: "body",
-          name: "data",
-          description: "Task Information",
-          required: true,
-          schema: {
-            type: "object",
-            properties: {
-              status: {
-                type: 'number',
-                description: '任務狀態',
-                default: 0,
-              },
-            },
           },
         },
       ],

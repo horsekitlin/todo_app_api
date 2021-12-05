@@ -48,6 +48,18 @@ const createTask = async (userId, task) => {
   return await getTask(result.id);
 };
 
+const updateTask = async (taskId, updatedData) => {
+  const taskResult = await database.Task.findOne({ where: { id: taskId }});
+  if (isEmpty(taskResult)) {
+    throw new Error('任務不存在');
+  }
+
+  taskResult.status = updatedData.status;
+  await taskResult.save();
+  return await getTask(taskId);
+};
+
 module.exports.getTask = getTask;
 module.exports.getTasks = getTasks;
 module.exports.createTask = createTask;
+module.exports.updateTask = updateTask;
