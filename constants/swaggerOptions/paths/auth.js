@@ -13,13 +13,13 @@ module.exports = {
           schema: {
             type: "object",
             properties: {
-              phone: {
+              email: {
                 type: "string",
-                default: "0987654321"
+                default: "aaaa@bbb.ccc"
               },
               password: {
                 type: "string",
-                default: "a12345678"
+                default: "Aa12345678"
               }
             }
           },
@@ -29,8 +29,21 @@ module.exports = {
         200: {
           description: "OK",
           schema: {
-            type: "string",
-            default: "OK"
+            type: "object",
+            properties: {
+              success: {
+                type: "boolean",
+                default: true,
+              },
+              expireIn: {
+                type: 'number',
+                description: '過期的時間, null 為永遠不會過期',
+              },
+              user: {
+                type: 'object',
+                $ref: "#/definitions/User",
+              },
+            },
           },
         },
       },

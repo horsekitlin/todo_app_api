@@ -37,11 +37,11 @@ async function(accessToken, refreshToken, profile, done) {
 passport.use(
   new LocalStrategy(
     {
-      usernameField: 'phone',
+      usernameField: 'email',
       passwordField: 'password'
     },
-    async (phone, password, done) => {
-      const user = await getUserWithPasswordBy(phone);
+    async (email, password, done) => {
+      const user = await getUserWithPasswordBy(email);
       const { validated } = validateUserAndPassword(user, password);
 
       if (!validated) {
