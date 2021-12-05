@@ -74,7 +74,10 @@ const validateUser = async (userId) => {
     throw new Error('使用者不存在');
   }
 
-  
+  if (userResult.status === 0) {
+    userResult.status = 1;
+    await userResult.save();
+  }
 };
 
 module.exports.parseUserResponse = parseUserResponse;
