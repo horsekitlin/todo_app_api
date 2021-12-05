@@ -74,7 +74,7 @@ passport.deserializeUser((user, done) => {
 });
 
 module.exports.jwtAuthorizationMiddleware = (req, res, next) => {
-  passport.authenticate('jwt', { session: true }, (err, user, info) => {
+  passport.authenticate('jwt', { session: false }, (err, user, info) => {
     if (err || !user) {
       const err = {
         success: false,
@@ -85,6 +85,7 @@ module.exports.jwtAuthorizationMiddleware = (req, res, next) => {
 
       return res.status(401).json(err); // send the error response to client
     }
+    req.user = user;
     return next(null, user);
   })(req, res, next);
 }

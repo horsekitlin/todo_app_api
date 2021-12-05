@@ -1,13 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const yup = require("yup");
+const { jwtAuthorizationMiddleware } = require('../helpers/passportManager');
 const { responseErrWithMsg } = require('../helpers/response');
 const { passwordSchema } = require('../helpers/validateSchemaHelper');
 const { createUser, getUserByUserId, updateUserByUserId, validateUser } = require('../services/userServices');
 
-router.get('/:userId', async (req, res) => {
+
+router.get('/', jwtAuthorizationMiddleware, async (req, res) => {
   try {
-    const { userId } = req.params;
+    const { id: userId } = req.user.data;
     const result = await getUserByUserId(userId);
 
     res.json({ success: true, data: result });
