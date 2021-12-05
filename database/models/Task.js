@@ -6,6 +6,16 @@ module.exports = (sequelize, DataTypes) => {
     "Task",
     {
       ...baseMigration,
+      userId: {
+        field: 'user_id',
+        type: DataTypes.INTEGER,
+        references: {
+          model: 'users',
+          key: 'id'
+        },
+        onUpdate: 'cascade',
+        onDelete: 'cascade'
+      },
       title: {
         field: "title",
         type: DataTypes.STRING,

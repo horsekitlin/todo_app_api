@@ -29,7 +29,6 @@ router.put('/:userId', async (req, res) => {
   }
 });
 
-
 const registeRequestSchema = yup.object({
   password: passwordSchema,
   name: yup.string().required('名稱不可為空'),
