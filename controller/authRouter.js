@@ -11,7 +11,6 @@ const {
   getUserWithThirdPartydBy,
 } = require("../services/userServices");
 const { jwtAuthorizationMiddleware } = require("../helpers/passportManager");
-const { passwordSchema } = require("../helpers/validateSchemaHelper");
 
 const router = express.Router();
 
@@ -48,11 +47,6 @@ router.post("/logout", jwtAuthorizationMiddleware, async (req, res) => {
   } catch (error) {
     responseErrWithMsg(res, error.message);
   }
-});
-
-const loginRequestSchema = yup.object({
-  email: yup.string().required("信箱或密碼不可為空"),
-  password: passwordSchema,
 });
 
 router.post("/", (req, res) => {

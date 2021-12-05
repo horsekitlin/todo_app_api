@@ -7,7 +7,7 @@ const swaggerUi = require("swagger-ui-express");
 const { specs } = require('../constants/swaggerOptions');
 const indexRouter = require("../controller/index");
 const authRouter = require("../controller/authRouter");
-const homeRouter = require("../controller/homeRouter");
+const taskRouter = require("../controller/taskRouter");
 const userRouter = require("../controller/userRouter");
 
 
@@ -22,6 +22,7 @@ const {
 } = process.env;
 
 const { initializeApp } = require("firebase-admin/app");
+const { jwtAuthorizationMiddleware } = require("./passportManager");
 
 initializeApp({
   apiKey: FIREBASE_API_KEY,
@@ -51,7 +52,7 @@ expressApp.use(passport.initialize());
 expressApp.use('/', indexRouter);
 expressApp.use('/auth', authRouter);
 expressApp.use('/users', userRouter);
-expressApp.use('/home', passport.authenticate('jwt', { session: false }), homeRouter);
+expressApp.use('/tasks', jwtAuthorizationMiddleware, taskRouter);
 
 // Add GET /health-check express route
 expressApp.get("/health-check", (req, res) => {
