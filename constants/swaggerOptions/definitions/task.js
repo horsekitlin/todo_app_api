@@ -23,17 +23,24 @@ module.exports = {
     },
   },
   Task: {
-    id: {
-      type: 'number',
-      description: '任務的 Id',
-      default: 1,
-    },
-    ...BaskTask,
-    createdAt: {
-      type: 'string',
-      description: '使用者的建立時間戳',
-      default: '2021-12-05T07:38:21.759Z',
-    },
+    type: 'object',
+    properties: {
+      id: {
+        type: 'number',
+        description: '任務的 Id',
+        default: 1,
+      },
+      ...BaskTask,
+      user: {
+        type: 'object',
+        $ref: "#/definitions/RefrenceUser",
+      },
+      createdAt: {
+        type: 'string',
+        description: '使用者的建立時間戳',
+        default: '2021-12-05T07:38:21.759Z',
+      },
+    },    
   },
   Tasks: {
     type: "array",

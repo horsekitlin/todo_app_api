@@ -27,6 +27,7 @@ module.exports = {
                 default: true,
               },
               data: {
+                type: 'object',
                 $ref: "#/definitions/Tasks",
               },
             },

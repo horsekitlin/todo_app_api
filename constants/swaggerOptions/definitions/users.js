@@ -32,8 +32,24 @@ const BasicUser = {
 };
 module.exports = {
   RegisteUser: {
+    type: 'object',
     required: ['name', 'email', 'password'],
     properties: BasicUser,
+  },
+  RefrenceUser: {
+    type: 'object',
+    required: [],
+    properties: {
+      id: {
+        type: 'number',
+        description: '使用者的 Id',
+        default: 1,
+      },
+      ...BasicUser,
+      password: undefined,
+     facebookId: undefined,
+     googleId: undefined,
+    },
   },
   User: {
     required: [],
