@@ -26,14 +26,15 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Task.associate = function (models) {
-    // User.hasMany(models.Contract, {
-    //   as: 'contracts',
-    //   foreignKey: {
-    //     name: 'user_id'
-    //   },
-    //   onUpdate: 'CASCADE',
-    //   onDelete: 'CASCADE',
-    // });
+    Task.belongsTo(models.User, {
+      as: "user",
+      foreignKey: {
+        name: 'user_id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
+
   };
 
   return Task;

@@ -52,14 +52,14 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   User.associate = function (models) {
-    // User.hasMany(models.Contract, {
-    //   as: 'contracts',
-    //   foreignKey: {
-    //     name: 'user_id'
-    //   },
-    //   onUpdate: 'CASCADE',
-    //   onDelete: 'CASCADE',
-    // });
+    User.hasMany(models.Task, {
+      as: "tasks",
+      foreignKey: {
+        name: 'user_id'
+      },
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    });
   };
 
   return User;
