@@ -5,12 +5,33 @@ const passport = require("passport");
 const cookieParser = require("cookie-parser");
 const swaggerUi = require("swagger-ui-express");
 const { specs } = require('../constants/swaggerOptions');
-const { jwtAuthorizationMiddleware } = require("../helpers/passportManager");
 const indexRouter = require("../controller/index");
 const authRouter = require("../controller/authRouter");
 const homeRouter = require("../controller/homeRouter");
 const userRouter = require("../controller/userRouter");
 
+
+const {
+  FIREBASE_API_KEY,
+  FIREBASE_AUTH_DOMAIN,
+  FIREBASE_PROJECT_ID,
+  FIREBASE_STORE_BUCKET,
+  FIREBASE_MESSAGE_SENDER_ID,
+  FIREBASE_APP_ID,
+  FIREBASE_MEASUREMENT_ID,
+} = process.env;
+
+const { initializeApp } = require("firebase-admin/app");
+
+initializeApp({
+  apiKey: FIREBASE_API_KEY,
+  authDomain: FIREBASE_AUTH_DOMAIN,
+  projectId: FIREBASE_PROJECT_ID,
+  storageBucket: FIREBASE_STORE_BUCKET,
+  messagingSenderId: FIREBASE_MESSAGE_SENDER_ID,
+  appId: FIREBASE_APP_ID,
+  measurementId: FIREBASE_MEASUREMENT_ID,
+});
 const ENVIRONMENT = process.env.ENV || "dev";
 
 let expressApp = express();

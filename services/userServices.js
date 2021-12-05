@@ -3,6 +3,7 @@ const pick = require("lodash/pick");
 const isEmpty = require("lodash/isEmpty");
 const isNull = require("lodash/isNull");
 const { sendValidationEmail } = require("../helpers/emailHelper");
+const { Op } = require("sequelize");
 
 const getUserByUserId = async (userId) => {
   return await database.User.findOne({
@@ -28,10 +29,30 @@ const updateUserByUserId = async (userId, query) => {
   return user;
 };
 
-const getUserWithPasswordBy = async (phone) => {
+
+const getUserWithThirdPartydBy = async (email) => {
   const userResult = await database.User.findOne({
     where: {
-      phone,
+      email,
+      [Op.or]: [
+        { facebookId: { [Op.ne]: null } },
+        { googleId: { [Op.ne]: null } },
+      ],
+    },
+  });
+
+  if (isEmpty(userResult)) {
+    throw new Error('user not found');
+  }
+
+  return userResult;
+};
+
+
+const getUserWithPasswordBy = async (email) => {
+  const userResult = await database.User.findOne({
+    where: {
+      email,
     },
   });
 
@@ -42,8 +63,9 @@ const parseUserResponse = (userResult) => {
   const userResponse = pick(userResult, [
     "id",
     "name",
+    "status",
     "email",
-    "createAt",
+    "createdAt",
   ]);
   return userResponse;
 };
@@ -97,6 +119,7 @@ const validateUser = async (userId) => {
 module.exports.parseUserResponse = parseUserResponse;
 module.exports.getUserByUserId = getUserByUserId;
 module.exports.getUserWithPasswordBy = getUserWithPasswordBy;
+module.exports.getUserWithThirdPartydBy = getUserWithThirdPartydBy;
 module.exports.createUser = createUser;
 module.exports.updateUserByUserId = updateUserByUserId;
 module.exports.validateUser = validateUser;
