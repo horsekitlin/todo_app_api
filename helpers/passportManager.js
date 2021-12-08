@@ -73,7 +73,7 @@ passport.deserializeUser((user, done) => {
   done(null, user);
 });
 
-module.exports.jwtAuthorizationMiddleware = (req, res, next) => {
+const jwtAuthorizationMiddleware = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (err, user, info) => {
     if (err || !user) {
       const err = {
@@ -89,3 +89,6 @@ module.exports.jwtAuthorizationMiddleware = (req, res, next) => {
     return next(null, user);
   })(req, res, next);
 }
+
+module.exports.validateUserAndPassword = validateUserAndPassword;
+module.exports.jwtAuthorizationMiddleware = jwtAuthorizationMiddleware;

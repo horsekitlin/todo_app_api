@@ -1,5 +1,5 @@
 module.exports = {
-  "/validate/email": {
+  "/users/validate/email": {
     post: {
       tags: ["使用者"],
       summary: "重新寄送驗證信",
@@ -14,6 +14,63 @@ module.exports = {
         },
       ],
       responses: {
+        200: {
+          description: "OK",
+          schema: {
+            type: "object",
+            properties: {
+              success: {
+                type: "boolean",
+                default: true,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  "/users/reset/password": {
+    post: {
+      tags: ["使用者"],
+      summary: "使用者重設密碼",
+      description: "使用者重設密碼",
+      operationId: "userResetPassword",
+      consumes: ["application/json"],
+      produces: ["application/json"],
+      parameters: [
+        {
+          in: "body",
+          name: "data",
+          description: "User Information",
+          required: true,
+          schema: {
+            type: "object",
+            properties: {
+              oldPassword: {
+                type: 'string',
+                required: true,
+                description: '使用者舊密碼',
+                default: 'aA$12345678',
+              },
+              password: {
+                type: 'string',
+                required: true,
+                description: '使用者新密碼',
+                default: 'aA$123456789',
+              },
+            },
+          },
+        },
+      ],
+      security: [
+        {
+          ApiKeyAuth: [],
+        },
+      ],
+      responses: {
+        400: {
+          description: "Invalid input",
+        },
         200: {
           description: "OK",
           schema: {

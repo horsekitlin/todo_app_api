@@ -15,7 +15,7 @@ const BasicUser = {
     type: 'string',
     required: true,
     description: '使用者密碼',
-    default: 'aA12345678',
+    default: 'aA$12345678',
   },
   googleId: {
     type: 'string',

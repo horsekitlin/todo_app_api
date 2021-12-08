@@ -4,6 +4,7 @@ const isEmpty = require("lodash/isEmpty");
 const isNull = require("lodash/isNull");
 const { sendValidationEmail } = require("../helpers/emailHelper");
 const { Op } = require("sequelize");
+const { validateUserAndPassword } = require("../helpers/passportManager");
 
 const getUserByUserId = async (userId) => {
   return await database.User.findOne({
@@ -12,6 +13,25 @@ const getUserByUserId = async (userId) => {
       id: userId,
     },
   });
+};
+
+const updatePassword = async (userId, body) => {
+  const user = await database.User.findOne({
+    where: {
+      id: userId,
+    },
+  });
+
+  const { validated } = validateUserAndPassword(user, body.oldPassword);
+
+  if (!validated) {
+    const message = '使用者不存在或密碼錯誤';
+    const notfoundError = new Error(message);
+    throw notfoundError;
+  }
+
+  user.password = body.password;
+  await user.save();
 };
 
 const updateUserByUserId = async (userId, query) => {
@@ -128,7 +148,6 @@ const validateUser = async (userId) => {
     throw new Error('使用者不存在');
   }
 
-  console.log("🚀 ~ file: userServices.js ~ line 130 ~ validateUser ~ userResult", userResult)
   if (userResult.status === 0) {
     userResult.status = 1;
     await userResult.save();
@@ -140,6 +159,7 @@ module.exports.getUserByUserId = getUserByUserId;
 module.exports.getUserWithPasswordBy = getUserWithPasswordBy;
 module.exports.getUserWithThirdPartydBy = getUserWithThirdPartydBy;
 module.exports.createUser = createUser;
+module.exports.updatePassword = updatePassword;
 module.exports.updateUserByUserId = updateUserByUserId;
 module.exports.validateUser = validateUser;
 module.exports.sendValidationEmailBy = sendValidationEmailBy;

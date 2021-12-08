@@ -4,7 +4,7 @@ const yup = require("yup");
 const { jwtAuthorizationMiddleware } = require('../helpers/passportManager');
 const { responseErrWithMsg, responseOk } = require('../helpers/response');
 const { passwordSchema } = require('../helpers/validateSchemaHelper');
-const { createUser, getUserByUserId, updateUserByUserId, validateUser, sendValidationEmailBy } = require('../services/userServices');
+const { createUser, updatePassword, getUserByUserId, updateUserByUserId, validateUser, sendValidationEmailBy } = require('../services/userServices');
 
 router.get('/', jwtAuthorizationMiddleware, async (req, res) => {
   try {
@@ -31,6 +31,23 @@ router.put('/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
     const result = await updateUserByUserId(userId, req.body);
+
+    responseOk(res, { success: true, data: result });
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+});
+
+const updatePasswordRequestSchema = yup.object({
+  oldPassword: passwordSchema,
+  password: passwordSchema,
+});
+
+router.post('/reset/password', jwtAuthorizationMiddleware, async (req, res) => {
+  try {
+    const { id: userId } = req.user.data;
+    const validation = await updatePasswordRequestSchema.validate(req.body);
+    const result = await updatePassword(userId, validation);
 
     responseOk(res, { success: true, data: result });
   } catch(error) {
