@@ -1,4 +1,34 @@
 module.exports = {
+  "/validate/email": {
+    post: {
+      tags: ["使用者"],
+      summary: "重新寄送驗證信",
+      description: "重新寄送驗證信",
+      operationId: "resendValidateEmail",
+      consumes: ["application/json"],
+      produces: ["application/json"],
+      parameters: [],
+      security: [
+        {
+          ApiKeyAuth: [],
+        },
+      ],
+      responses: {
+        200: {
+          description: "OK",
+          schema: {
+            type: "object",
+            properties: {
+              success: {
+                type: "boolean",
+                default: true,
+              },
+            },
+          },
+        },
+      },
+    },
+  },
   "/users": {
     get: {
       tags: ["使用者"],

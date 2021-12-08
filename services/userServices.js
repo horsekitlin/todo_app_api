@@ -101,6 +101,24 @@ const createUser = async (userData) => {
     }
 };
 
+const sendValidationEmailBy = async (userId) => {
+  const userResult = await database.User.findOne({
+    id: userId,
+  });
+
+  const {
+    name,
+    email,
+  } = userResult;
+
+  await sendValidationEmail({
+    from: 'demo server <demoserver@gmail.com>',
+    to: `${name} <${email}>`,
+    subject: 'Validate Your Account',
+    html: `<a target='_blank' href="${process.env.DOMAIN}/${userResult.id}">Validate Link</a>`,
+  });
+};
+
 const validateUser = async (userId) => {
   const userResult = await database.User.findOne({
     id: userId,
@@ -123,3 +141,4 @@ module.exports.getUserWithThirdPartydBy = getUserWithThirdPartydBy;
 module.exports.createUser = createUser;
 module.exports.updateUserByUserId = updateUserByUserId;
 module.exports.validateUser = validateUser;
+module.exports.sendValidationEmailBy = sendValidationEmailBy;

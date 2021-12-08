@@ -2,17 +2,16 @@ const express = require('express');
 const router = express.Router();
 const yup = require("yup");
 const { jwtAuthorizationMiddleware } = require('../helpers/passportManager');
-const { responseErrWithMsg } = require('../helpers/response');
+const { responseErrWithMsg, responseOk } = require('../helpers/response');
 const { passwordSchema } = require('../helpers/validateSchemaHelper');
-const { createUser, getUserByUserId, updateUserByUserId, validateUser } = require('../services/userServices');
+const { createUser, getUserByUserId, updateUserByUserId, validateUser, sendValidationEmailBy } = require('../services/userServices');
 
 
 router.get('/', jwtAuthorizationMiddleware, async (req, res) => {
   try {
     const { id: userId } = req.user.data;
     const result = await getUserByUserId(userId);
-
-    res.json({ success: true, data: result });
+    responseOk(res, { success: true, data: result });
   } catch(error) {
     return responseErrWithMsg(res, error.message);
   }
@@ -23,7 +22,7 @@ router.put('/:userId', async (req, res) => {
     const { userId } = req.params;
     const result = await updateUserByUserId(userId, req.body);
 
-    res.json({ success: true, data: result });
+    responseOk(res, { success: true, data: result });
   } catch(error) {
     return responseErrWithMsg(res, error.message);
   }
@@ -43,7 +42,7 @@ router.post('/', async (req, res) => {
 
     const result = await createUser(req.body);
 
-    res.json({ success: true, data: result });
+    responseOk(res, { success: true, data: result });
   } catch(error) {
     return responseErrWithMsg(res, error.message);
   }
@@ -55,7 +54,18 @@ router.post('/:userId', async (req, res) => {
 
     const result = await validateUser(userId);
 
-    res.json({ success: true, data: result });
+    responseOk(res, { success: true, data: result });
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+});
+
+
+router.post('/validate/email', async (req, res) => {
+  try {
+    const { id: userId } = req.user.data;
+    await sendValidationEmailBy(userId);
+    responseOk(res, { success: true });
   } catch(error) {
     return responseErrWithMsg(res, error.message);
   }
