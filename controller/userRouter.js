@@ -17,6 +17,18 @@ router.get('/', jwtAuthorizationMiddleware, async (req, res) => {
   }
 });
 
+router.get('/:userId', async (req, res) => {
+  try {
+    const {userId} = req.params;
+
+    const result = await validateUser(userId);
+
+    responseOk(res, { success: true, data: result });
+  } catch(error) {
+    return responseErrWithMsg(res, error.message);
+  }
+});
+
 router.put('/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
@@ -48,20 +60,7 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.post('/:userId', async (req, res) => {
-  try {
-    const {userId} = req.params;
-
-    const result = await validateUser(userId);
-
-    responseOk(res, { success: true, data: result });
-  } catch(error) {
-    return responseErrWithMsg(res, error.message);
-  }
-});
-
-
-router.post('/validate/email', async (req, res) => {
+router.post('/validate/email', jwtAuthorizationMiddleware, async (req, res) => {
   try {
     const { id: userId } = req.user.data;
     await sendValidationEmailBy(userId);

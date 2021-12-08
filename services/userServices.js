@@ -96,7 +96,7 @@ const createUser = async (userData) => {
         from: 'demo server <demoserver@gmail.com>',
         to: `${name} <${email}>`,
         subject: 'Validate Your Account',
-        html: `<a target='_blank' href="${process.env.DOMAIN}/${userResult.id}">Validate Link</a>`,
+        html: `<a target='_blank' href="${process.env.DOMAIN}/users/${userResult.id}">Validate Link</a>`,
       });
     }
 };
@@ -115,14 +115,12 @@ const sendValidationEmailBy = async (userId) => {
     from: 'demo server <demoserver@gmail.com>',
     to: `${name} <${email}>`,
     subject: 'Validate Your Account',
-    html: `<a target='_blank' href="${process.env.DOMAIN}/${userResult.id}">Validate Link</a>`,
+    html: `<a target='_blank' href="${process.env.DOMAIN}/users/${userResult.id}">Validate Link</a>`,
   });
 };
 
 const validateUser = async (userId) => {
-  const userResult = await database.User.findOne({
-    id: userId,
-  });
+  const userResult = await getUserByUserId(userId);
 
   if (isEmpty(userResult)) {
     throw new Error('使用者不存在');
