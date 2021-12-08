@@ -1,0 +1,21 @@
+stages:
+  - buildDev
+  - deployDev
+
+image: gitlab/dind
+services:
+  - docker:dind
+
+deployDev:
+  stage: deployDev
+  tags:
+    - ubuntu-runner
+  only:
+      - deployDev
+  script:
+    - source ~/.nvmrc
+    - yarn install
+    - cp "${DEV_ENV}" .env
+    - cp "${DB_CONFIG}" ./database/config/config.js
+    - pm2 delete  ecosystem.config.js
+    - pm2 start  ecosystem.config.js   
