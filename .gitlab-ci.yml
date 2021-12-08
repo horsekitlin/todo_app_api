@@ -7,9 +7,11 @@ services:
   - docker:dind
 
 deployDev:
+  before_script:
+    - export PATH=$PATH:/home/gitlab-runner/.nvm/versions/node/v14.17.6/bin
   stage: deployDev
   tags:
-    - ubuntu-runner
+    - passon-api-demo-server
   only:
       - deployDev
   script:
