@@ -58,9 +58,12 @@ router.post("/", (req, res) => {
       const token = generatorToken(user);
 
       return responseOk(res, {
-        token,
-        expireIn: null,
-        user: parseUserResponse(user),
+        success: true,
+        data: {
+          token,
+          expireIn: null,
+          user: parseUserResponse(user),
+        },
       });
     } catch (error) {
       responseErrWithMsg(res, error.message);
@@ -85,10 +88,13 @@ router.post("/third/party", async (req, res) => {
     const token = generatorToken(user);
 
     return responseOk(res, {
+      success: true,
+      data: {
         token,
         expireIn: null,
         user: parseUserResponse(user),
-      });
+      },
+    });
   } catch (error) {
     responseErrWithMsg(res, error.message);
   }
