@@ -103,7 +103,9 @@ const createUser = async (userData) => {
 
 const sendValidationEmailBy = async (userId) => {
   const userResult = await database.User.findOne({
-    id: userId,
+    where: {
+      id: userId,
+    },
   });
 
   const {
@@ -126,6 +128,7 @@ const validateUser = async (userId) => {
     throw new Error('使用者不存在');
   }
 
+  console.log("🚀 ~ file: userServices.js ~ line 130 ~ validateUser ~ userResult", userResult)
   if (userResult.status === 0) {
     userResult.status = 1;
     await userResult.save();

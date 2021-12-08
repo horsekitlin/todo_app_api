@@ -6,7 +6,6 @@ const { responseErrWithMsg, responseOk } = require('../helpers/response');
 const { passwordSchema } = require('../helpers/validateSchemaHelper');
 const { createUser, getUserByUserId, updateUserByUserId, validateUser, sendValidationEmailBy } = require('../services/userServices');
 
-
 router.get('/', jwtAuthorizationMiddleware, async (req, res) => {
   try {
     const { id: userId } = req.user.data;
@@ -20,10 +19,9 @@ router.get('/', jwtAuthorizationMiddleware, async (req, res) => {
 router.get('/:userId', async (req, res) => {
   try {
     const {userId} = req.params;
+    await validateUser(userId);
 
-    const result = await validateUser(userId);
-
-    responseOk(res, { success: true, data: result });
+    responseOk(res, { success: true });
   } catch(error) {
     return responseErrWithMsg(res, error.message);
   }
