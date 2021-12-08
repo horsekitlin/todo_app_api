@@ -15,7 +15,6 @@ deployDev:
   only:
       - deployDev
   script:
-    - source ~/.nvmrc
     - yarn install
     - cp "${DEV_ENV}" .env
     - cp "${DB_CONFIG}" ./database/config/config.js
