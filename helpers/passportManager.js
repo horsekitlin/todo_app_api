@@ -1,24 +1,14 @@
 const passport = require('passport');
 const passportJWT = require("passport-jwt");
-const isEmpty = require('lodash/isEmpty');
 const LocalStrategy = require('passport-local').Strategy;
 const FacebookStrategy = require('passport-facebook').Strategy;
-const { saltHashPassword } = require('./utils');
+const { validateUserAndPassword } = require('../helpers/utils');
 const { getUserWithPasswordBy } = require('../services/userServices');
 
 const JWTStrategy = passportJWT.Strategy;
 const ExtractJWT = passportJWT.ExtractJwt;
 
 const { AUTH_SECRET, FACEBOOK_APP_ID, FACEBOOK_APP_SECRET, FACEBOOK_CALLBACK_DOMAIN  } = process.env;
-
-const validateUserAndPassword = (user, password) => {
-  if (isEmpty(user)) return { validated: false };
-
-  const hashPassword = saltHashPassword(password);
-  if (hashPassword !== user.password) return { validated: false };
-
-  return { validated: true };
-}
 
 passport.use(new FacebookStrategy({
   clientID: FACEBOOK_APP_ID,
@@ -90,5 +80,4 @@ const jwtAuthorizationMiddleware = (req, res, next) => {
   })(req, res, next);
 }
 
-module.exports.validateUserAndPassword = validateUserAndPassword;
 module.exports.jwtAuthorizationMiddleware = jwtAuthorizationMiddleware;

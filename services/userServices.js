@@ -4,7 +4,7 @@ const isEmpty = require("lodash/isEmpty");
 const isNull = require("lodash/isNull");
 const { sendValidationEmail } = require("../helpers/emailHelper");
 const { Op } = require("sequelize");
-const { validateUserAndPassword } = require("../helpers/passportManager");
+const { validateUserAndPassword } = require("../helpers/utils");
 
 const getUserByUserId = async (userId) => {
   return await database.User.findOne({
@@ -163,3 +163,4 @@ module.exports.updatePassword = updatePassword;
 module.exports.updateUserByUserId = updateUserByUserId;
 module.exports.validateUser = validateUser;
 module.exports.sendValidationEmailBy = sendValidationEmailBy;
+console.log('userServices initial done');
